@@ -4,7 +4,10 @@ import UrlShortenerForm from './UrlShortenerForm';
 const UrlShortener = () => {
     const [shortenedUrl, setShortenedUrl] = React.useState<string>('');
     return (
-        <UrlShortenerForm setShortenedUrl={setShortenedUrl}/>
+        <>
+            <UrlShortenerForm setShortenedUrl={setShortenedUrl} />
+            {shortenedUrl}
+        </>
     )
 }
 

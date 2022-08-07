@@ -1,1 +1,1 @@
-export const URL_SHORTENER_ENDPOINT = 'api/hello';
+export const URL_SHORTENER_ENDPOINT = 'api/createShortUrl';

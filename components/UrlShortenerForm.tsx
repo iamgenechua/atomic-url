@@ -1,5 +1,5 @@
 import React from 'react'
-import { URL_SHORTENER_ENDPOINT } from '../routes';
+import { URL_SHORTENER_ENDPOINT } from '../routes/';
 
 interface UrlShortenerFormProps {
     setShortenedUrl: (shortenedUrl: string) => void
@@ -7,20 +7,20 @@ interface UrlShortenerFormProps {
 
 const UrlShortenerForm = ({ setShortenedUrl }: UrlShortenerFormProps): JSX.Element => {
     
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Stop the form from submitting
 
-        // Get the form data
+        const form = event.target as HTMLFormElement;
+        // get form data
         const data = {
-            title: event.target.title.value,
-        }
+            url: form.url.value
+        };
 
         // send data to server in json format
         const jsonData = JSON.stringify(data);
 
         // API endpoint where we send form data
         const endpoint = URL_SHORTENER_ENDPOINT;
-
         const options = {
             method: 'POST',
             headers: {
@@ -32,14 +32,13 @@ const UrlShortenerForm = ({ setShortenedUrl }: UrlShortenerFormProps): JSX.Eleme
         const response = await fetch(endpoint, options);
 
         const result = await response.json();
-        console.log(result);
 
-        setShortenedUrl(result.data);
+        setShortenedUrl(result.url);
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" name="title" />
+            <input type="text" name="url" />
             <button type="submit">Submit</button>
         </form>
     )
