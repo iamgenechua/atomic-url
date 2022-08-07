@@ -11,6 +11,7 @@ const UrlShortenerForm = ({ setShortenedUrl }: UrlShortenerFormProps): JSX.Eleme
         event.preventDefault(); // Stop the form from submitting
 
         const form = event.target as HTMLFormElement;
+        
         // get form data
         const data = {
             url: form.url.value
@@ -33,7 +34,7 @@ const UrlShortenerForm = ({ setShortenedUrl }: UrlShortenerFormProps): JSX.Eleme
 
         const result = await response.json();
 
-        setShortenedUrl(result.url);
+        setShortenedUrl(result);
     }
 
     return (
