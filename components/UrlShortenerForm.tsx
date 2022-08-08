@@ -1,8 +1,6 @@
-import { NextApiRequest } from 'next';
-import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import { URL_SHORTENER_ENDPOINT } from '../routes/';
-import { isValidUrl, generateUniqueUrlHash } from '../utils/';
+import { isValidUrl } from '../utils/';
 
 interface UrlShortenerFormProps {
     setShortenedUrl: (shortenedUrl: string) => void
