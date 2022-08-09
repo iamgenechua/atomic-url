@@ -25,10 +25,12 @@ const ShortUrlHash = ({ redirectedUrl }: { redirectedUrl: string }) => {
     useEffect(() => {
         if (redirectedUrl) {
             window.location.href = redirectedUrl; // Redirect to the original url
-        } 
+        } else {
+            // Redirect to 404 page
+            router.push('/PageNotFound');
+        }
     } , [redirectedUrl, router]);
-
-    return <PageNotFound />
+    return null;
 }
 
 export default ShortUrlHash
