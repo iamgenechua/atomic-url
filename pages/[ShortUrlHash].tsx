@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { prisma } from '../db';
+import PageNotFound from './PageNotFound';
 
 export async function getServerSideProps(context: any) {
     const { ShortUrlHash } = context.params;
@@ -24,12 +25,10 @@ const ShortUrlHash = ({ redirectedUrl }: { redirectedUrl: string }) => {
     useEffect(() => {
         if (redirectedUrl) {
             window.location.href = redirectedUrl; // Redirect to the original url
-        } else {
-            router.push('/'); // TODO: redirect to 404 page
-        }
+        } 
     } , [redirectedUrl, router]);
 
-    return null;
+    return <PageNotFound />
 }
 
 export default ShortUrlHash

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { URL_SHORTENER_ENDPOINT } from '../routes/';
+import { CustomSearch } from '../styles/styled-components';
 import { isValidUrl } from '../utils/';
 
 interface UrlShortenerFormProps {
@@ -14,17 +15,15 @@ const UrlShortenerForm = ({ setShortenedUrl }: UrlShortenerFormProps): JSX.Eleme
         // get window property to get the current href
         const { location } = window;
         setHref(location.href);
-    } , []);
+    }, []);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Stop the form from submitting
+    const handleSubmit = async (value: string) => {
 
-        const form = event.target as HTMLFormElement;
-        const url = form.url.value;
+        const url = value;
 
         // Check if the url is valid
         if (!isValidUrl(url)) {
-            setShortenedUrl('Invalid URL');
+            setShortenedUrl('Invalid URL. Did you forget to add http(s)://?');
             return;
         }
 
@@ -58,10 +57,16 @@ const UrlShortenerForm = ({ setShortenedUrl }: UrlShortenerFormProps): JSX.Eleme
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input type="text" name="url" />
-            <button type="submit">Submit</button>
-        </form>
+        <>
+            <CustomSearch
+                placeholder='Enter your full URL. (E.g: https://www.google.com)'
+                allowClear
+                enterButton="Search"
+                size="large"
+                onSearch={handleSubmit}
+            />
+        </>
+
     )
 }
 
