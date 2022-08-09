@@ -3,6 +3,31 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../db";
 import { generateUniqueUrlHash } from "../../utils";
 
+export const getUrlObjectFromUserInput = async (url: string) => {
+  return await prisma.url.findUnique({
+    where: {
+      url: url,
+    }
+  });
+}
+
+export const createUrlObject = async (url: string) => {
+  // keep retrying prisma create until hash is unique
+  while (true) {
+    try {
+      let hash = generateUniqueUrlHash(url);
+      return await prisma.url.create({
+        data: {
+          url: url,
+          shortUrlHash: hash,
+        }
+      });
+    } catch (error) {
+      // do nothing
+    }
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // guard clause against non post requests
   if (req.method !== "POST") {
@@ -14,32 +39,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { url } = data;
 
   // check if url already exists in db
-  const existingUrlObject = await prisma.url.findUnique({
-    where: {
-      url: url,
-    }
-  });
+  const existingUrlObject = await getUrlObjectFromUserInput(url);
 
   let returnedUrlObject = existingUrlObject;
 
   // if url doesn't exist in db, create unique hash and insert into db
   if (!existingUrlObject) {
-
-    // keep retrying prisma create until hash is unique
-    while (true) {
-      try {
-        let hash = generateUniqueUrlHash(url);
-        returnedUrlObject = await prisma.url.create({
-          data: {
-            url: url,
-            shortUrlHash: hash,
-          }
-        });
-        break;
-      } catch (error) {
-        // do nothing
-      }
-    }
+    returnedUrlObject = await createUrlObject(url);
   }
 
   return res.status(200).json({

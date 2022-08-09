@@ -1,4 +1,5 @@
 import { createHash } from "crypto";
+import { prisma } from '../db';
 
 export const isValidUrl = (url: string): boolean => {
     try {

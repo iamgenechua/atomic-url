@@ -12,8 +12,6 @@ export async function getServerSideProps(context: any) {
 
     const redirectedUrl = existingUrlObject?.url;
 
-
-
     return {
         props: {
             redirectedUrl: redirectedUrl || null
@@ -25,13 +23,12 @@ const ShortUrlHash = ({ redirectedUrl }: { redirectedUrl: string }) => {
     const router = useRouter();
     useEffect(() => {
         if (redirectedUrl) {
-            window.location.href = redirectedUrl;
+            window.location.href = redirectedUrl; // Redirect to the original url
         } else {
             router.push('/'); // TODO: redirect to 404 page
         }
     } , [redirectedUrl, router]);
 
-    // get request 
     return null;
 }
 
